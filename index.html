@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>That Greater Life — Order Merch</title>
+<meta name="description" content="Order your That Greater Life hoodie or crewneck.">
+<link rel="icon" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#07070b; --card:#111119; --line:#26263a; --text:#f4f4f8; --mute:#9a9ab0; --accent:#5a54d8; --accent2:#8b86ff; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.5 Inter, system-ui, sans-serif;
+    background-image: radial-gradient(60rem 30rem at 50% -10rem, rgba(90,84,216,.35), transparent 70%); background-repeat:no-repeat; }
+  .wrap { max-width:640px; margin:0 auto; padding:28px 16px 64px; }
+  header { text-align:center; }
+  header img { width:150px; height:auto; }
+  h1 { font-family:Anton, Impact, sans-serif; font-weight:400; font-size:clamp(2.2rem, 9vw, 3.2rem); line-height:1; letter-spacing:.02em; margin:18px 0 8px; text-transform:uppercase; }
+  .lead { color:var(--mute); margin:0 auto 28px; max-width:30rem; }
+  .products { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .product { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:10px; }
+  .product img { width:100%; aspect-ratio:1; object-fit:contain; filter:drop-shadow(0 18px 18px rgba(0,0,0,.6)); }
+  .product h2 { font-family:Anton, Impact, sans-serif; font-weight:400; font-size:1.4rem; margin:0; text-transform:uppercase; display:flex; justify-content:space-between; }
+  .product h2 span { color:var(--accent2); }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  label { display:block; font-size:.8rem; font-weight:600; color:var(--mute); text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
+  input, select, textarea { width:100%; font:inherit; color:var(--text); background:#0b0b12; border:1px solid var(--line); border-radius:10px; padding:11px 12px; }
+  input:focus, select:focus, textarea:focus { outline:2px solid var(--accent); border-color:transparent; }
+  fieldset { border:0; padding:0; margin:28px 0 0; }
+  legend { font-family:Anton, Impact, sans-serif; font-size:1.3rem; text-transform:uppercase; margin-bottom:12px; padding:0; }
+  .field { margin-bottom:12px; }
+  .total { margin-top:28px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; }
+  .total .amt { font-family:Anton, Impact, sans-serif; font-size:2.4rem; line-height:1; }
+  .total p { margin:8px 0 0; color:var(--mute); }
+  .total strong { color:var(--text); }
+  .check { display:flex; gap:10px; align-items:flex-start; margin-top:16px; font-size:.95rem; }
+  .check input { width:20px; height:20px; flex:none; margin-top:2px; accent-color:var(--accent); }
+  button { margin-top:20px; width:100%; font:inherit; font-weight:700; font-size:1.05rem; letter-spacing:.04em; text-transform:uppercase; color:#fff; background:var(--accent); border:0; border-radius:12px; padding:16px; cursor:pointer; }
+  button:hover { background:#6b65ec; }
+  .err { color:#ff8a8a; font-size:.9rem; min-height:1.2em; margin-top:10px; }
+  .support { text-align:center; color:var(--mute); margin-top:28px; font-size:.95rem; }
+  @media (max-width:420px) { .products { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="img/logo.png" alt="That Greater Life">
+    <h1>Order your merch</h1>
+    <p class="lead">Every piece you buy is a great way to support us and the mission. Fill this out, send your e-transfer, and we'll deliver it to you.</p>
+  </header>
+
+  <form id="order" action="https://formsubmit.co/thatgreaterlife@gmail.com" method="POST">
+    <input type="hidden" name="_subject" value="New TGL merch order">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" id="next" value="">
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+    <input type="hidden" name="Order" id="summary">
+    <input type="hidden" name="Total" id="totalField">
+
+    <div class="products">
+      <div class="product" data-price="45" data-name="Hoodie">
+        <img src="img/hoodie.png" alt="Black That Greater Life hoodie">
+        <h2>Hoodie <span>$45</span></h2>
+        <div class="row">
+          <div><label for="hq">Qty</label><select id="hq" name="Hoodie qty"><option>0</option><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+          <div><label for="hs">Size</label><select id="hs" name="Hoodie size"><option>S</option><option selected>M</option><option>L</option><option>XL</option><option>XXL</option></select></div>
+        </div>
+      </div>
+      <div class="product" data-price="40" data-name="Crewneck">
+        <img src="img/crewneck.png" alt="Black That Greater Life crewneck">
+        <h2>Crewneck <span>$40</span></h2>
+        <div class="row">
+          <div><label for="cq">Qty</label><select id="cq" name="Crewneck qty"><option selected>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+          <div><label for="cs">Size</label><select id="cs" name="Crewneck size"><option>S</option><option selected>M</option><option>L</option><option>XL</option><option>XXL</option></select></div>
+        </div>
+      </div>
+    </div>
+
+    <fieldset>
+      <legend>Your info</legend>
+      <div class="field"><label for="name">Full name</label><input id="name" name="Name" required autocomplete="name"></div>
+      <div class="row">
+        <div class="field"><label for="email">Email</label><input id="email" type="email" name="email" required autocomplete="email"></div>
+        <div class="field"><label for="phone">Phone</label><input id="phone" type="tel" name="Phone" required autocomplete="tel"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Delivery address</legend>
+      <div class="field"><label for="street">Street address &amp; apt</label><input id="street" name="Street" required autocomplete="street-address"></div>
+      <div class="row">
+        <div class="field"><label for="city">City</label><input id="city" name="City" required autocomplete="address-level2"></div>
+        <div class="field"><label for="prov">Province</label><input id="prov" name="Province" required autocomplete="address-level1" value="QC"></div>
+      </div>
+      <div class="field"><label for="postal">Postal code</label><input id="postal" name="Postal code" required autocomplete="postal-code"></div>
+      <div class="field"><label for="notes">Notes (optional)</label><textarea id="notes" name="Notes" rows="2"></textarea></div>
+    </fieldset>
+
+    <div class="total">
+      <label>Your total</label>
+      <div class="amt" id="total">$45</div>
+      <p>After you submit, send an Interac e-transfer of <strong id="total2">$45</strong> to <strong>thatgreaterlife@gmail.com</strong> with your name in the message.</p>
+      <label class="check"><input type="checkbox" required> <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--text)">I'll send my e-transfer to thatgreaterlife@gmail.com</span></label>
+    </div>
+
+    <button type="submit">Place my order</button>
+    <div class="err" id="err" role="alert"></div>
+  </form>
+
+  <p class="support">Thank you for supporting That Greater Life. 🙏<br>One Vision · One God · One Purpose</p>
+</div>
+<script>
+  const form = document.getElementById('order');
+  const items = [...document.querySelectorAll('.product')];
+  function calc() {
+    let total = 0, lines = [];
+    for (const p of items) {
+      const [qty, size] = p.querySelectorAll('select');
+      const n = +qty.value;
+      if (n) { total += n * +p.dataset.price; lines.push(`${n} x ${p.dataset.name} (${size.value})`); }
+    }
+    document.getElementById('total').textContent = document.getElementById('total2').textContent = '$' + total;
+    document.getElementById('summary').value = lines.join(', ');
+    document.getElementById('totalField').value = '$' + total;
+    return total;
+  }
+  form.addEventListener('change', calc);
+  form.addEventListener('submit', e => {
+    const total = calc();
+    if (!total) { e.preventDefault(); document.getElementById('err').textContent = 'Pick at least one hoodie or crewneck.'; return; }
+    const url = new URL('thanks.html', location.href);
+    url.searchParams.set('total', total);
+    document.getElementById('next').value = url.href;
+  });
+  calc();
+</script>
+</body>
+</html>
