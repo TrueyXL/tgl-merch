@@ -39,6 +39,7 @@
   .check input { width:20px; height:20px; flex:none; margin-top:2px; accent-color:var(--accent); }
   button { margin-top:20px; width:100%; font:inherit; font-weight:700; font-size:1.05rem; letter-spacing:.04em; text-transform:uppercase; color:#fff; background:var(--accent); border:0; border-radius:12px; padding:16px; cursor:pointer; }
   button:hover { background:#6b65ec; }
+  button:disabled { opacity:.6; cursor:wait; }
   .err { color:#ff8a8a; font-size:.9rem; min-height:1.2em; margin-top:10px; }
   .support { text-align:center; color:var(--mute); margin-top:28px; font-size:.95rem; }
   @media (max-width:420px) { .products { grid-template-columns:1fr; } }
@@ -56,7 +57,6 @@
     <input type="hidden" name="_subject" value="New TGL merch order">
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_next" id="next" value="">
     <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
     <input type="hidden" name="Order" id="summary">
     <input type="hidden" name="Total" id="totalField">
@@ -129,12 +129,26 @@
     return total;
   }
   form.addEventListener('change', calc);
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = document.getElementById('err'), btn = form.querySelector('button');
     const total = calc();
-    if (!total) { e.preventDefault(); document.getElementById('err').textContent = 'Pick at least one hoodie or crewneck.'; return; }
-    const url = new URL('thanks.html', location.href);
-    url.searchParams.set('total', total);
-    document.getElementById('next').value = url.href;
+    if (!total) { err.textContent = 'Pick at least one hoodie or crewneck.'; return; }
+    if (form._honey.value) return;
+    err.textContent = ''; btn.disabled = true; btn.textContent = 'Sending your order…';
+    const data = Object.fromEntries(new FormData(form));
+    delete data._next; delete data._honey;
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/thatgreaterlife@gmail.com', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data)
+      });
+      const out = await res.json();
+      if (!res.ok || String(out.success) !== 'true') throw new Error(out.message || 'Send failed');
+      location.href = 'thanks.html?total=' + total;
+    } catch (x) {
+      btn.disabled = false; btn.textContent = 'Place my order';
+      err.textContent = "Your order didn't go through. Check your connection and try again, or email thatgreaterlife@gmail.com.";
+    }
   });
   calc();
 </script>
