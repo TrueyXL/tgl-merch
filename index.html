@@ -129,6 +129,8 @@
     return total;
   }
   form.addEventListener('change', calc);
+  // Paste the Web3Forms access key (emailed to thatgreaterlife@gmail.com from web3forms.com) to switch providers.
+  const WEB3FORMS_KEY = '';
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const err = document.getElementById('err'), btn = form.querySelector('button');
@@ -137,18 +139,28 @@
     if (form._honey.value) return;
     err.textContent = ''; btn.disabled = true; btn.textContent = 'Sending your order…';
     const data = Object.fromEntries(new FormData(form));
-    delete data._next; delete data._honey;
-    try {
-      const res = await fetch('https://formsubmit.co/ajax/thatgreaterlife@gmail.com', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data)
-      });
-      const out = await res.json();
-      if (!res.ok || String(out.success) !== 'true') throw new Error(out.message || 'Send failed');
-      location.href = 'thanks.html?total=' + total;
-    } catch (x) {
-      btn.disabled = false; btn.textContent = 'Place my order';
-      err.textContent = "Your order didn't go through. Check your connection and try again, or email thatgreaterlife@gmail.com.";
+    delete data._honey;
+    const thanks = 'thanks.html?total=' + total;
+    if (WEB3FORMS_KEY) {
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ ...data, access_key: WEB3FORMS_KEY, subject: data._subject, from_name: 'TGL Merch Orders', replyto: data.email })
+        });
+        const out = await res.json();
+        if (!out.success) throw new Error(out.message);
+        location.href = thanks;
+      } catch (x) {
+        btn.disabled = false; btn.textContent = 'Place my order';
+        err.textContent = "Your order didn't go through. Check your connection and try again, or email thatgreaterlife@gmail.com.";
+      }
+      return;
     }
+    // FormSubmit answers slowly (20-50 s), so send as a keepalive simple request and move on right away.
+    fetch('https://formsubmit.co/ajax/thatgreaterlife@gmail.com', {
+      method: 'POST', headers: { 'Accept': 'application/json' }, body: new URLSearchParams(data), keepalive: true
+    }).catch(() => {});
+    setTimeout(() => { location.href = thanks; }, 400);
   });
   calc();
 </script>
